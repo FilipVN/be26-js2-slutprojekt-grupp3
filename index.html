@@ -1,15 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
 
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/src/index.css">
+
+    <!-- mute
     <link rel="stylesheet" href="/src/search.css">
     <link rel="stylesheet" href="/src/app.css">
     <link rel="stylesheet" href="/src/grid.css">
-    <link rel="stylesheet" href="/src/status.css">
+    <link rel="stylesheet" href="/src/status.css">.  -->
+
     <title>Scrumbled&trade;</title>
 </head>
 
@@ -20,273 +23,44 @@
     </header>
 
     <main>
+<section class="project-section">
+    <h2>Add a New Project</h2>
+    <form id="project.form">
+        <label>Project Title</label>
+        <input type="text" placeholder="Project title" required/>
+        <button type="submit">Add</button>
+    </form>
+</section>
 
-        <!-- Search and filters -->
-        <section class="toolbar">
+<section class="projection-section">
+    <h2>Projects</h2>
+    <div id="project-list">
 
-            <form id="searchForm" class="search-form">
-                <input
-                    id="searchInput"
-                    type="search"
-                    placeholder="Search..."
-                    aria-label="Search projects, members or tasks"
-                >
-
-                <button type="submit">
-                    Search
-                </button>
-            </form>
-
-            <select id="projectFilter" aria-label="Filter projects">
-                <option value="all">All projects</option>
-            </select>
-
-            <select id="memberFilter" aria-label="Filter members">
-                <option value="all">All members</option>
-            </select>
-
-            <select id="taskFilter" aria-label="Filter tasks">
-                <option value="all">All tasks</option>
-                <option value="todo">To do</option>
-                <option value="inProgress">In progress</option>
-                <option value="done">Done</option>
-            </select>
-
-        </section>
-
-
-        <section class="crud-container">
-
-    <!-- ADD / UPDATE PROJECT -->
-    <article class="crud-panel">
-
-        <h2>Project</h2>
-
-        <form id="projectForm">
-
-            <input
-                id="projectName"
-                type="text"
-                placeholder="Project name"
-                required
-            >
-
-            <textarea
-                id="projectDescription"
-                placeholder="Description"
-            ></textarea>
-
-            <label for="projectDeadline">
-                Deadline
-            </label>
-
-            <input
-                id="projectDeadline"
-                type="date"
-            >
-
-            <input
-                id="projectImage"
-                type="url"
-                placeholder="Image URL"
-            >
-
-            <div class="form-buttons">
-
-                <button
-                    id="projectSubmitButton"
-                    type="submit"
-                >
-                    Add Project
-                </button>
-
-                <button
-                    id="cancelProjectEdit"
-                    type="button"
-                    class="cancel-button hidden"
-                >
-                    Cancel
-                </button>
-
-            </div>
-
-        </form>
-
-    </article>
-
-
-    <!-- ADD / UPDATE MEMBER -->
-    <article class="crud-panel">
-
-        <h2>Member</h2>
-
-        <form id="memberForm">
-
-            <input
-                id="memberName"
-                type="text"
-                placeholder="Member name"
-                required
-            >
-
-            <input
-                id="memberEmail"
-                type="email"
-                placeholder="Email"
-            >
-
-            <input
-                id="memberImage"
-                type="url"
-                placeholder="Profile image URL"
-            >
-
-            <div class="form-buttons">
-
-                <button
-                    id="memberSubmitButton"
-                    type="submit"
-                >
-                    Add Member
-                </button>
-
-                <button
-                    id="cancelMemberEdit"
-                    type="button"
-                    class="cancel-button hidden"
-                >
-                    Cancel
-                </button>
-
-            </div>
-
-        </form>
-
-    </article>
-
-
-    <!-- ADD / UPDATE TASK -->
-    <article class="crud-panel">
-
-        <h2>Task</h2>
-
-        <form id="taskForm">
-
-            <input
-                id="taskTitle"
-                type="text"
-                placeholder="Task title"
-                required
-            >
-
-            <textarea
-                id="taskDescription"
-                placeholder="Description"
-            ></textarea>
-
-            <select
-                id="taskProject"
-                required
-            >
-                <option value="">
-                    Select project
-                </option>
-            </select>
-
-            <select id="taskMember">
-
-                <option value="">
-                    Unassigned
-                </option>
-
-            </select>
-
-            <select id="taskStatus">
-
-                <option value="todo">
-                    To do
-                </option>
-
-                <option value="inProgress">
-                    In progress
-                </option>
-
-                <option value="done">
-                    Done
-                </option>
-
-            </select>
-
-
-            <div class="form-buttons">
-
-                <button
-                    id="taskSubmitButton"
-                    type="submit"
-                >
-                    Add Task
-                </button>
-
-                <button
-                    id="cancelTaskEdit"
-                    type="button"
-                    class="cancel-button hidden"
-                >
-                    Cancel
-                </button>
-
-            </div>
-
-        </form>
-
-    </article>
-
+    </div>
 </section>
 
 
-        <p id="statusText" class="status"></p>
-
-        <!-- Project cards -->
-        <section
-            id="projectGrid"
-            class="project-grid"
-            aria-live="polite"
-        >
-            <p class="message loading">
-                Loading projects...
-            </p>
-        </section>
 
 
 
 
-        <section class="management-container">
-
-    <div>
-
-        <h2>Members</h2>
-
-        <div
-            id="memberList"
-            class="management-list"
-        ></div>
-
-    </div>
 
 
-    <div>
 
-        <h2>Tasks</h2>
 
-        <div
-            id="taskList"
-            class="management-list"
-        ></div>
 
-    </div>
 
-</section>
 
+
+
+
+
+
+
+
+
+
+    </main>
 
 
 
@@ -295,10 +69,10 @@
     </footer>
 
 
-
+    <!-- mute 
     <script type="module" src="/src/main.ts"></script>
     <script type="module" src="/src/types.ts"></script>
-    <script type="module" src="/src/firebase.ts"></script>
+    <script type="module" src="/src/firebase.ts"></script> -->
     <!-- modules
     <script type="module" src="/src/projects.ts"></script>
     <script type="module" src="/src/members.ts"></script>

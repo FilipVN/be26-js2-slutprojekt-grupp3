@@ -4,106 +4,84 @@
     padding: 0;
 }
 
+
 html {
     font-size: 100%;
 }
 
+
 body {
     min-height: 100vh;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-        #ffffff;
-
-    color:
-        #111111;
+    font-family: Georgia, "Times New Roman", serif;
+    background: #ffffff;
+    color: #111111;
 }
 
-
-/* -------------------------
-   Header
-------------------------- */
 
 .header {
-    width: 100%;
-    min-height: 230px;
-
+    margin: 10px;
+    padding: 5px;
+    box-sizing: border-box;
     display: flex;
+    width: 100%;
+    min-height: clamp(150px, 25vw, 300px);
     align-items: flex-end;
     justify-content: center;
-
-    padding: 20px;
-
     background-image:
-        linear-gradient(
-            rgba(0, 0, 0, 0.05),
-            rgba(0, 0, 0, 0.12)
-        ),
+        linear-gradient(rgba(75, 74, 74, 0.5),
+            rgba(240, 55, 55, 0.12)),
         url("./assets/scrum-board.png");
-
+    background-position: center 50%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
 }
-
 
 .header h1 {
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
+    margin: 10px;
+    font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
 
-    font-size:
-        clamp(4rem, 11vw, 7rem);
-
+    /* Responsive text */
+    font-size: clamp(2.5rem, 10vw, 7rem);
     line-height: 0.9;
-
+    text-align: center;
     color: #ff9800;
-
-    -webkit-text-stroke:
-        2px white;
-
-    text-shadow:
-        0 3px 4px
-        rgba(0, 0, 0, 0.35);
+    -webkit-text-stroke: clamp(1px, 0.15vw, 2px) white;
 }
 
 
-/* -------------------------
-   Main
-------------------------- */
-
 main {
+    margin: 10px;
+    padding: 10px;
     width: 100%;
 }
 
 
-/* -------------------------
-   Footer
-------------------------- */
+
 
 footer {
     padding: 30px;
-
     text-align: center;
-
     color: #666;
 }
 
 
-/* -------------------------
-   Accessibility
-------------------------- */
+
+
+/*********************************/
 
 :focus-visible {
-    outline: 3px solid #ff9800;
+    outline: 3px solid #03360a;
     outline-offset: 3px;
 }
+
+/*********************************/
+
+
+
+
+
 
 
 /* -------------------------

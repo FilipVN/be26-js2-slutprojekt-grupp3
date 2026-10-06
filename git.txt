@@ -21,3 +21,10 @@ git add .           /* add all files
 git commit -m "edit: index.html"
 git push -u origin main
 git status
+
+
+//problems
+git pull origin main --no-rebase
+git push origin main
+
+git push --set-upstream origin main
