@@ -1,0 +1,23 @@
+git status
+git init
+git remote add origin https://github.com/Grilzyyy/be26-js2-slutprojekt-grupp3.git
+git remote -v
+
+     /* set your branch to main
+git branch -M main
+
+      /* fetch from Github repository
+git fetch origin 
+git pull origin main
+
+      / * if Git complains about unrelated histories, use
+git pull origin main --allow-unrelated-histories
+
+
+     /* normal workflow
+git add index.html  /* specify a file
+git add .           /* add all files
+
+git commit -m "edit: index.html"
+git push -u origin main
+git status
