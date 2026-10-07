@@ -17,6 +17,7 @@ const projectList = document.querySelector(
 // Firebase reference
 const projectsRef = ref(database, "projects");
 
+
 // add to Firebase
 projectForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -60,3 +61,4 @@ onValue(projectsRef, (snapshot) => {
     });
 
 });
+
