@@ -23,7 +23,7 @@ body {
     padding: 5px;
     box-sizing: border-box;
     display: flex;
-    width: 100%;
+    width: calc(100% - 20px);
     min-height: clamp(150px, 25vw, 300px);
     align-items: flex-end;
     justify-content: center;
@@ -31,7 +31,7 @@ body {
         linear-gradient(rgba(75, 74, 74, 0.5),
             rgba(240, 55, 55, 0.12)),
         url("./assets/scrum-board.png");
-    background-position: center 50%;
+    background-position: center;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -103,6 +103,6 @@ footer {
     }
 
     .header h1 {
-        font-size: 4rem;
+         font-size: clamp(2.3rem, 12vw, 4rem);
     }
 }
