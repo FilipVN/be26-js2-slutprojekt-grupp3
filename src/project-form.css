@@ -1,0 +1,200 @@
+/* css for project-form.html */
+.project-section {
+    width: min(100% - 20px, 720px);
+    margin: 20px 20px;
+    padding: 20px;
+    background: #fffdf4;
+    border: 1px solid #f0e6a5;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+}
+
+.project-section h2 {
+    margin: 0 0 15px;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #2f2f2f;
+}
+
+
+/* Form layout */
+#project-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+/* Labels */
+#project-form label {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    font-weight: 600; 
+    color: #3b3b3b;
+}
+
+
+/* Inputs */
+#project-form input,
+#project-form select,
+#project-form textarea {
+    margin-bottom: 4px;
+    padding: 12px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fffbea;
+    border: 1px solid #eadf9a;
+    border-radius: 10px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Placeholder */
+#project-form input::placeholder,
+#project-form textarea::placeholder {
+    color: #999;
+}
+
+
+/* Textarea */
+#project-form textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+
+/* Select */
+#project-form select {
+    cursor: pointer;
+}
+
+
+/* Focus */
+#project-form input:focus,
+#project-form textarea:focus,
+#project-form select:focus {
+    outline: none;
+    background-color: #fffef8;
+    border-color: #d8bb2e;
+    box-shadow:
+        0 0 0 3px rgba(216, 187, 46, 0.3);
+}
+
+
+/* Readonly created date */
+#project-created {
+    background-color: #f1eedb;
+    color: #777;
+    cursor: not-allowed;
+}
+
+
+/* Add button */
+#project-form button {
+    width: 50%;
+    margin-top: 16px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #e3ca4c;
+    color: #292929;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Button*/
+#project-form button:hover {
+    background-color: #d6bb37;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+}
+
+#project-form button:active {
+    transform: translateY(0);
+}
+
+
+/*project list*/
+#project-list {
+    width: 100%;
+    margin-top: 24px;
+}
+
+
+/*tablet*/
+@media (max-width: 768px) {
+
+    .project-section {
+        width: min(100% - 20px, 600px);
+        margin: 24px auto;
+        padding: 20px;
+    }
+
+    .project-section h2 {
+        font-size: 1.7rem;
+    }
+
+    #project-form input,
+    #project-form textarea,
+    #project-form select,
+    #project-form button {
+        font-size: 1rem;
+    }
+}
+
+
+/*mobile*/
+@media (max-width: 480px) {
+
+    .project-section {
+        width: calc(100% - 20px);
+        margin: 4px auto;
+        padding: 10px;
+        border-radius: 14px;
+    }
+
+    .project-section h2 {
+        margin-bottom: 6px;
+        font-size: 1.4rem;
+    }
+
+    #project-form {
+        gap: 4px;
+    }
+
+    #project-form label {
+        font-size: 0.9rem;
+    }
+
+    #project-form input,
+    #project-form textarea,
+    #project-form select {
+        padding: 11px 12px;
+        font-size: 1rem;
+    }
+
+    #project-form button {
+        width: 50%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+}

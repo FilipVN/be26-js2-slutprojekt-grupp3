@@ -1,0 +1,75 @@
+<!--form-container in index.html-->
+<section class="project-section">
+
+    <h2>Add a New Project</h2>
+    <form id="project-form">
+        <label for="project-name">Name</label><br>
+        <textarea type="text" id="project-name" rows="2" cols="30" placeholder="Project name" required></textarea>
+        <br><br>
+
+        <label for="project-description">Description</label><br>
+        <textarea id="project-description" rows="4" cols="30" placeholder="Project description" required></textarea>
+
+            
+        <br><br>
+
+        <label for="project-category">Category</label>
+        <select id="project-category" required>
+            <option value="frontEnd">frontEnd </option>
+            <option value="backEnd">backEnd </option>
+            <option value="ux">UX</option>
+        </select>
+        <br><br>
+
+        <label for="project-deadline">Deadline</label>
+        <input type="date" id="project-deadline" required>
+        <br><br>
+
+        <label for="project-created">Created</label>
+        <script>
+            const today = new Date().toISOString().split('T')[0];
+            document.write('<input type="date" id="project-created" value="' + today + '" readonly>');
+        </script>
+        <br><br>
+
+        <label for="project-member-name">Member</label>
+        <input type="text" id="project-member-name" placeholder="Member name" required>
+        <br><br>
+
+        <label for="project-member-category">Member Category</label>
+        <select id="project-member-category" required>
+            <option value="owner">Owner </option>
+            <option value="scrum master">Scrum Master </option>
+            <option value="developer">Developer </option>
+        </select>
+        <br><br>
+
+        <label for="project-tasks">Tasks</label><br>
+        <textarea id="project-tasks" rows="3" cols="30" placeholder="Task names, separated by commas" required></textarea>
+        <br><br>
+
+        <label for="project-status">Status</label>
+        <select id="project-status" required>
+            <option value="toDo">To Do</option>
+            <option value="inProgress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+        <br><br>
+
+        <label for="project-priority">Priority</label>
+        <select id="project-priority" required>
+            <option value="low"> low 🟢 </option>
+            <option value="medium"> medium 🟡 </option>
+            <option value="high"> high 🔴 </option>
+        </select>
+        <br><br>
+
+        <button type="submit"> Add </button>
+    </form>
+
+    <section class="project-section">
+        <h2>Projects</h2>
+        <div id="project-list"></div>
+    </section>
+
+</section>

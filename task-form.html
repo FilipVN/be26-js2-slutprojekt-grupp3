@@ -1,0 +1,61 @@
+<!--form-container in index.html-->
+<section class="project-section">
+
+    <h2>Add a New Project</h2>
+    <form id="project-form">
+        <label for="project-name">Name</label>
+        <input type="text" id="project-name" placeholder="Project name" required>
+        <br>
+        <label for="project-description">Description</label>
+        <input type="text" id="project-description" placeholder="Project description" required>
+        <br>
+        <label for="project-category">Category</label>
+        <select id="project-category" required>
+            <option value="frontEnd">frontEnd </option>
+            <option value="backEnd">backEnd </option>
+            <option value="ux">UX</option>
+        </select>
+        <br>
+        <label for="project-deadline">Deadline</label>
+        <input type="date" id="project-deadline" required>
+        <br>
+        <label for="project-created">Created</label>
+        <input type="date" id="project-created" required>
+        <br>
+        <label for="project-member">Member</label>
+        <input type="text" id="project-member-name" placeholder="Member name" required>
+        <br>
+        <label for="project-member-category">Member Category</label>
+        <select id="project-member-category" required>
+            <option value="owner">Owner </option>
+            <option value="scrum master">Scrum Master </option>
+            <option value="developer">Developer </option>
+        </select>
+        <br>
+        <label for="project-tasks">Tasks</label>
+        <input type="text" id="project-tasks" placeholder="Task names, separated by commas" required>
+        <br>
+        <label for="project-status">Status</label>
+        <select id="project-status" required>
+            <option value="toDo">To Do</option>
+            <option value="inProgress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+        <br>
+        <label for="project-priority">Priority</label>
+        <select id="project-priority" required>
+            <option value="low"> low 🟢 </option>
+            <option value="medium"> medium 🟡 </option>
+            <option value="high"> high 🔴 </option>
+        </select>
+        <br>
+
+        <button type="submit"> Add </button>
+    </form>
+
+    <section class="project-section">
+        <h2>Projects</h2>
+        <div id="project-list"></div>
+    </section>
+
+</section>
