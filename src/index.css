@@ -18,14 +18,13 @@ body {
 }
 
 
-.header {
-    margin: 10px;
-    padding: 5px;
+.index-header {
+    margin: 0px;
+    padding: 0px;
     box-sizing: border-box;
     display: flex;
-    width: calc(100% - 20px);
-    min-height: clamp(150px, 25vw, 300px);
-    align-items: flex-end;
+    width: calc(100% - 5px);
+    min-height: clamp(150px, 60vw, 200px);
     justify-content: center;
     background-image:
         linear-gradient(rgba(75, 74, 74, 0.5),
@@ -33,17 +32,15 @@ body {
         url("./assets/scrum-board.png");
     background-position: center;
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
 }
 
-.header h1 {
-    margin: 10px;
-    font-family: Georgia, "Times New Roman", serif;
+.index-header h1 {
+    margin: 20px;
     font-style: italic;
 
     /* Responsive text */
-    font-size: clamp(2.5rem, 10vw, 7rem);
+    font-size: clamp(1.5rem, 20vw, 2.5rem);
     line-height: 0.9;
     text-align: center;
     color: #ff9800;
@@ -52,83 +49,20 @@ body {
 
 
 main {
-    margin: 10px;
-    padding: 10px;
     width: 100%;
 }
 
-section {
-    margin: 10px;
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.joanna {
+    margin: 5px;
+    background-color: #daf2cc;
+    border-color: #e6e465;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.jeongsook {
+    margin: 5px;
+    background-color: #f9f7e5;
+    border-color: #f4f3b1;
+}
 
 
 
@@ -179,11 +113,12 @@ footer {
 
 @media (max-width: 700px) {
 
-    .header {
-        min-height: 180px;
+
+    .index-header {
+        min-height: 50px;
     }
 
-    .header h1 {
-         font-size: clamp(2.3rem, 12vw, 4rem);
+    .index-header h1 {
+         font-size: clamp(1.5rem, 12vw, 3rem);
     }
 }

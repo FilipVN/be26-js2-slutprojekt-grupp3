@@ -1,64 +1,36 @@
-import { ref, push, onValue } from "firebase/database";
-import { database } from "./firebase";
+import { initProjectForm } from "./form";
 
 
-// HTML elements
-const projectForm = document.querySelector(
-    "#project-form") as HTMLFormElement;
 
-const projectNameInput = document.querySelector("#project-name"
-) as HTMLInputElement;
+//*****************************************/
+//main id=app, section container(card, form)
+async function loadHTML (
+    containerId: string,
+    file: string
+): Promise<void>{
 
-const projectList = document.querySelector(
-    "#project-list"
-) as HTMLDivElement;
-
-
-// Firebase reference
-const projectsRef = ref(database, "projects");
-
-
-// add to Firebase
-projectForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const projectName = projectNameInput.value.trim();
-    if (projectName === "") {
-        return;
+    const response = await fetch(file);
+    if (!response.ok) {
+        throw new Error(`Failed to load ${file}: ${response.statusText}`);
     }
 
-    const project = {name: projectName};
-    try {
-        await push(projectsRef, project);
-        console.log("Project added:", project);
-        projectForm.reset();
-    } catch (error) {
-        console.error("Could not add project:", error);
-    }
-});
+    const html = await response.text();
+
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = html;
+    } else {
+        console.error(`Container with ID "${containerId}" not found.`);
+    }   
+}
 
 
-// fetch data from Firebase
-onValue(projectsRef, (snapshot) => {
-    projectList.innerHTML = "";
-    if (!snapshot.exists()) {
-        projectList.innerHTML = "<p>No projects found.</p>";
-        return;
-    }
+//main id=app section container(card, form)
+async function startApp(): Promise<void> {
+    await loadHTML("card-container", "card.html");
+    await loadHTML("form-container", "form.html");
+    initProjectForm();
+} 
 
-    snapshot.forEach((childSnapshot) => {
-        const project = childSnapshot.val();
-        const projectId = childSnapshot.key;
-        const projectCard = document.createElement("div");
-
-        projectCard.classList.add("project-card");
-        projectCard.innerHTML = `
-            <h3>${project.name}</h3>
-            <p>ID: ${projectId}</p>
-        `;
-
-        projectList.appendChild(projectCard);
-    });
-
-});
-
+startApp();
+//*****************************************/

@@ -3,107 +3,62 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="" />
+    <link rel="icon" type="image/png" href="/src/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/src/index.css">
 
     <!-- mute
+     ** joanna **
+    <link rel="stylesheet" href="/src/card.css">
+
+    ** avvakta 7 okt **
     <link rel="stylesheet" href="/src/search.css">
-    <link rel="stylesheet" href="/src/app.css">
     <link rel="stylesheet" href="/src/grid.css">
-    <link rel="stylesheet" href="/src/status.css">.  -->
+    -->
 
     <title>Scrumbled&trade;</title>
 </head>
 
 <body>
-
-    <header class="header">
-        <h1>(Scrumb)led&trade;</h1>
+    <header class="index-header">
+        <h1>(SCRUM)bled&trade;</h1>
     </header>
 
-    <main>
-<!--Joanna-->
-<section>
 
+    <main id="app">
+        <!--Joanna 7 okt-->
+        <section class="joanna" id="card-container"></section>
 
-</section>
+        <!--Jeongsook 7 okt-->
+        <section class="jeongsook" id="form-container"></section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--Jeongsook -->
-        <section class="project-section">
-            <h2>Add a New Project</h2>
-            <form id="project-form">
-                <label>Project Name</label>
-                <input type="text" id="project-name" placeholder="Project name" required />
-                <button type="submit">Add</button>
-            </form>
-        </section>
-
-        <section class="project-section">
-            <h2>Projects</h2>
-            <div id="project-list">
-                
-
-            </div>
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     </main>
 
 
 
-    <footer>
-        <p>© 2026 Scrumbled. All rights reserved.</p>
-    </footer>
 
 
-
-    <script type="module" src="/src/main.ts"></script>
-    <script type="module" src="/src/firebase.ts"></script>
+    <script type="module" src="src/firebase.ts"></script>
+    <script type="module" src="src/main.ts"></script>
+    <script type="module" src="src/form.ts"></script>
 
     <!-- mute
+
+    ** Filip 8 okt **
+    <script type="module" src="/src/card.ts"></script>
+    
+    ** avvakta 7 okt **
     <script type="module" src="/src/projects.ts"></script>
     <script type="module" src="/src/members.ts"></script>
-    <script type="module" src="/src/tasks.ts"></script>. -->
+    <script type="module" src="/src/tasks.ts"></script>. 
+    -->
+
+
+    <footer>
+        <p>© 2026 (Scrum)bled. All rights reserved.</p>
+    </footer>
+
 </body>
 
 </html>
