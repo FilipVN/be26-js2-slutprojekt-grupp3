@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist", // Your build folder containing index.html (e.g., dist, build, or public)
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
