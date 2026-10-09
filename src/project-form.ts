@@ -1,3 +1,12 @@
+//ref: create a reference ("projects") to a location in Firebase Realtime Database
+//push: add data under a new unique ID
+//onValue: listen for changes in Firebase Realtime Database and retrieve data
+//database: initialize Firebase Realtime Database instance
+
+//interface: structure of an object
+//class: blueprint for creating objects with properties and methods
+//constructor: 
+
 import { ref, push, onValue } from "firebase/database";
 import { database } from "./firebase";
 
@@ -6,7 +15,7 @@ interface Member {
     category: string;
 }
 
-
+/*** Project class ***/
 class Project {
     name: string;
     description: string;
@@ -53,7 +62,7 @@ class Project {
 }
 
 
-/* export project-form.ts to main.ts */
+/**************** export project-form.ts to main.ts ************************/
 export function initProjectForm(): void {
 
 /* html elements */
@@ -111,10 +120,11 @@ export function initProjectForm(): void {
     }
 
 
-/*Firebase reference projects node */
+/*** Firebase reference projects node ***/
     const projectsRef = ref(database, "projects");
 
-/* add each project to Firebase */
+
+/*** Add each project to Firebase ***/
     function createProject(): Project {
         const projectName = projectNameInput.value.trim();
         const projectDescription = projectDescriptionInput.value.trim();
@@ -140,7 +150,7 @@ export function initProjectForm(): void {
         };
 
 
-        /* Create object from Project class */
+        // Create object from Project class 
         const project =
             new Project(
                 projectName,
@@ -157,7 +167,7 @@ export function initProjectForm(): void {
     }
 
 
-    /* save a Project to Firebase */
+    /*** save a Project to Firebase ***/
     async function saveProject(project: Project): Promise<void> {
         try {
             await push(projectsRef, project);
@@ -168,23 +178,23 @@ export function initProjectForm(): void {
     }
 
 
-    /* Reset the form after submission */
+    /*** Reset the form after submission ***/
     function resetProjectForm(): void {
         projectForm.reset();
 
-        /*set TODAY as project-created */
+        //set TODAY as project-created
         const today = new Date().toISOString().split("T")[0];
         projectCreatedInput.value = today;
     }
 
 
-    /*eventListener for ADD button */
+    /*** eventListener for ADD button ***/
     projectForm.addEventListener("submit",
         async (event: SubmitEvent) => {
             event.preventDefault();
             const project = createProject();
 
-            /* if input value is empty */
+            // if input value is empty 
             if (
                 project.name === "" ||
                 project.description === "" ||
@@ -195,7 +205,8 @@ export function initProjectForm(): void {
                 return;
             }
 
-            /*save a project */
+            // if all input values are filled, save a project 
+            // save a project and reset the form
             await saveProject(project);
             console.log(project.getProjectInfo());
             console.log("Number of tasks:", project.getTaskCount());
@@ -205,7 +216,7 @@ export function initProjectForm(): void {
     );
 
 
-    /*Project card: without styling */
+    /*** Project card: without styling ***/
     function displayProject(project: Project, projectId: string ): void {
         const projectCard = document.createElement("div");
         projectCard.classList.add("project-card");
@@ -231,26 +242,27 @@ export function initProjectForm(): void {
         projectList.appendChild(projectCard);
     }
 
-    /* fetch projects from Firebase Realtime Database and display them */
+
+    /*** fetch projects from Firebase Realtime Database and display them ***/
     onValue(projectsRef,(snapshot) => {
             projectList.innerHTML = "";
 
-            /* if no projects found */
+            // if no projects found 
             if (!snapshot.exists()) {
                 projectList.innerHTML = "<p>No projects found.</p>";
                 return;
             }
-            /* fetch each project if projects found */
+            //fetch each project if projects found */
             snapshot.forEach((childSnapshot) => {
                     const data = childSnapshot.val();
                     const projectId = childSnapshot.key;
 
-                    /*if no project ID is available, Firebase returns empty string */
+                    //if no project ID is available, Firebase returns empty string */
                     if (!projectId) {
                         return;
                     }
 
-                    /* Create a Project object from the fetched data */
+                    //Create a Project object from the fetched data */
                     const project =
                         new Project(
                             data.name,
