@@ -1,0 +1,50 @@
+!!! update 2026-10-11 by J.Park
+
+
+npm run build
+npm run dev
+
+
+project/
+├── public/
+│   └── project-form.html
+│ 
+dist/
+├── assets/
+├── index.html
+└── project-form.html
+│ 
+├── src/
+│   ├── assets/
+│   ├── firebase.ts
+│   ├── index.css
+│   ├── main.ts
+│   ├── project-form.css
+│   └── project-form.ts
+│ 
+├── index.html
+├── firebase.json
+└── package.json
+
+
+
+TypeScript 
+
+Interface	interface ProjectData	         Defines what data a project must contain
+Class	    class Project	                 Blueprint for creating project objects
+Constructor	constructor(data)	             Gives values to a new object
+Function	function getValue()	             Reads data from HTML inputs
+Async function	async function addProject()	 Saves data to Firebase asynchronously
+
+
+-> HTML form 
+            project-form.html HTML elements
+            user writes input
+-> new Project() 
+            constructor creates a project object
+-> await addProject() 
+            save project to Firebase
+-> onValue()
+            fetch projects from Firebase
+-> projectList.appendChild(card)
+            displays the project on index.html/project-form.html

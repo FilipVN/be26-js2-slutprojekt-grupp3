@@ -1,10 +1,4 @@
-import { initProjectForm } from "../src/project-form";
-import { initMemberForm } from "../src/member-form";
-import { initTaskForm } from "../src/task-form";
-
-// Import the function from form.ts
-// import { initProjectForm } from "./card";
-
+import { initProjectForm } from "./project-form";
 
 
 //*****************************************/
@@ -32,15 +26,13 @@ async function loadHTML (
 
 //main id=app section container(card, form)
 async function startApp(): Promise<void> {
-    await loadHTML("card-container", "card.html");
-    await loadHTML("form-container", "src/project-form.html");
-    await loadHTML("form-container", "src/member-form.html");
-    await loadHTML("form-container", "src/task-form.html");
+
+    await loadHTML("form-container", "./project-form.html");
+
     initProjectForm();
-    initMemberForm();
-    initTaskForm();
+
 } 
 
-startApp();
+startApp().catch(console.error);
 //*****************************************/
 
