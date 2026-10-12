@@ -1,4 +1,5 @@
 import { initProjectForm } from "./project-form";
+import { initProjects } from "./projects";
 
 
 //*****************************************/
@@ -27,12 +28,30 @@ async function loadHTML (
 //main id=app section container(card, form)
 async function startApp(): Promise<void> {
 
-    await loadHTML("form-container", "./project-form.html");
+    await loadHTML("project-form-container", "./project-form.html");
+
+    await loadHTML("card-container", "./projects.html");
+
+    const addProjectButton =
+        document.querySelector<HTMLButtonElement>("#add-project-button");
+    const projectFormContainer =
+        document.querySelector<HTMLDivElement>("#project-form-container");
+
+    if (!addProjectButton || !projectFormContainer) {
+        throw new Error("Add project controls could not be initialized.");
+    }
+
+    addProjectButton.addEventListener("click", () => {
+        projectFormContainer.hidden = !projectFormContainer.hidden;
+        addProjectButton.setAttribute(
+            "aria-expanded",
+            String(!projectFormContainer.hidden)
+        );
+    });
 
     initProjectForm();
-
+    initProjects();
 } 
 
 startApp().catch(console.error);
 //*****************************************/
-

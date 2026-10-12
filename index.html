@@ -7,13 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/src/index.css">
     <link rel="stylesheet" href="/src/project-form.css">
+    <link rel="stylesheet" href="/src/projects.css">
 
     <!-- mute
      ** joanna 7 okt**
     <link rel="stylesheet" href="/src/card.css">
-
-    ** Jeongsook 7 okt **
-    <link rel="stylesheet" href="/src/form.css">
 
     ** avvakta 7 okt **
     <link rel="stylesheet" href="/src/search.css">
@@ -31,20 +29,19 @@
 
     <main id="app">
 
+
         <!--Joanna 7 okt-->
         <section class="joanna" id="card-container">
             
         </section>
-
-
-
-        <!--Jeongsook 7 okt-->
-        <section class="jeongsook" id="form-container">
-
+        
+        <section class="jeongsook" id="addProject-container">
+            <button id="add-project-button" type="button" aria-expanded="false"
+                aria-controls="project-form-container">
+                Add Project
+            </button>
+            <div id="project-form-container" hidden></div>
         </section>
-
-
-
 
 
     </main>

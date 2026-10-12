@@ -1,0 +1,199 @@
+/* Scrum board: colors and spacing follow the supplied sketch. */
+.scrum-board {
+    padding: 24px;
+    background: #fff;
+    font-family: Arial, sans-serif;
+    color: #171717;
+}
+
+.scrum-board * {
+    box-sizing: border-box;
+}
+
+.scrum-board h2 {
+    margin: 0 0 18px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.board-toolbar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+}
+
+.board-toolbar label,
+.task-filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: .78rem;
+    font-weight: 600;
+    color: #51565a;
+}
+
+.board-toolbar select {
+    display: block;
+    width: 100%;
+    padding: 6px 8px;
+    background: #ebeff0;
+    border: 1px solid #dce1e4;
+    border-radius: 7px;
+    font: inherit;
+    font-weight: 400;
+    font-size: .78rem;
+    color: #171717;
+    cursor: pointer;
+}
+
+.board-toolbar select:focus-visible {
+    outline: 3px solid #6f98e6;
+    outline-offset: 2px;
+}
+
+#board-message {
+    min-height: 1.4em;
+    margin: 0 0 14px;
+    color: #555;
+}
+
+.board-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+}
+
+.board-column {
+    min-width: 0;
+}
+
+.column-heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.column-heading span {
+    font-size: .85rem;
+    padding: 3px 9px;
+    background: #ffffff9c;
+    border-radius: 20px;
+}
+
+.board-column:nth-child(1) .column-heading,
+.board-column:nth-child(1) .project-board-card {
+    background: #dcebd8;
+}
+
+.board-column:nth-child(2) .column-heading,
+.board-column:nth-child(2) .project-board-card {
+    background: #fff1c8;
+}
+
+.board-column:nth-child(3) .column-heading,
+.board-column:nth-child(3) .project-board-card {
+    background: #f5d0d1;
+}
+
+.column-cards {
+    display: grid;
+    gap: 6px;
+}
+
+.project-board-card {
+    border-radius: 10px;
+    padding: 8px 10px;
+    min-width: 0;
+    border: 1px solid #e5e9e8;
+    box-shadow: 0 4px 10px #0000000a;
+    overflow-wrap: anywhere;
+}
+
+.project-board-card h4 {
+    margin: 0 0 4px;
+    font-size: clamp(.85rem, 1.3vw, 1rem);
+}
+
+.project-board-card p {
+    margin: 2px 0;
+    font-size: .78rem;
+    line-height: 1.2;
+}
+
+.project-board-card strong {
+    font-weight: 700;
+}
+
+.project-board-card .card-member-heading {
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+.project-board-card .card-member {
+    margin: 2px 0;
+}
+
+.project-board-card .card-empty {
+    color: #666;
+    font-style: italic;
+}
+
+.project-board-card .card-task-count {
+    font-size: .72rem;
+    color: #424242;
+}
+
+.board-empty {
+    margin: 0;
+    padding: 24px 12px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 16px;
+    text-align: center;
+    color: #666;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 950px) {
+    .board-columns {
+        gap: 12px;
+    }
+
+    .project-board-card {
+        padding: 7px 9px;
+        border-radius: 9px;
+    }
+}
+
+@media (max-width: 650px) {
+    .scrum-board {
+        padding: 14px;
+    }
+
+    .board-toolbar {
+        gap: 12px;
+        padding-bottom: 4px;
+    }
+
+    .board-columns {
+        grid-template-columns: 1fr;
+    }
+}

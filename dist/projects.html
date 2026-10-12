@@ -1,0 +1,58 @@
+<section class="scrum-board" aria-labelledby="board-title">
+  <h2 id="board-title">Scrum Board</h2>
+
+  <div class="board-toolbar">
+    <label>Filter Projects
+      <select id="filter-projects">
+        <option value="all">All projects</option>
+        <option value="todo">To Do</option>
+        <option value="inprogress">In Progress</option>
+        <option value="done">Done</option>
+      </select>
+    </label>
+
+    <label>Filter Members
+      <select id="filter-members">
+        <option value="all">All members</option>
+        <option value="owner">Owner</option>
+        <option value="scrum master">Scrum master</option>
+        <option value="developer">Developer</option>
+      </select>
+    </label>
+
+    <div class="task-filter-controls">
+      <label for="filter-tasks">Filter Tasks</label>
+      <select id="filter-tasks">
+        <option value="all">All tasks</option>
+        <option value="category">By category</option>
+        <option value="member">By member</option>
+      </select>
+    </div>
+
+    <label>Sort Projects
+      <select id="sort-projects">
+        <option value="default">Default order</option>
+        <option value="deadline-newest">Deadline newest</option>
+        <option value="deadline-oldest">Deadline oldest</option>
+        <option value="title-asc">Title A → Ö</option>
+        <option value="title-desc">Title Ö → A</option>
+      </select>
+    </label>
+  </div>
+
+  <p id="board-message" role="status" aria-live="polite">Loading projects…</p>
+  <div class="board-columns">
+    <section class="board-column" aria-labelledby="todo-title">
+      <h3 id="todo-title" class="column-heading">To Do <span id="todo-count">0</span></h3>
+      <div id="column-todo" class="column-cards"></div>
+    </section>
+    <section class="board-column" aria-labelledby="progress-title">
+      <h3 id="progress-title" class="column-heading">In Progress <span id="progress-count">0</span></h3>
+      <div id="column-inprogress" class="column-cards"></div>
+    </section>
+    <section class="board-column" aria-labelledby="done-title">
+      <h3 id="done-title" class="column-heading">Done <span id="done-count">0</span></h3>
+      <div id="column-done" class="column-cards"></div>
+    </section>
+  </div>
+</section>

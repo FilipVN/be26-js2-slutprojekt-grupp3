@@ -13,7 +13,7 @@ html {
 
 body {
     min-height: 100vh;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Arial, Helvetica, sans-serif, serif;
     background: #ffffff;
     color: #111111;
 }
@@ -57,8 +57,31 @@ main {
 
 .joanna {
     margin: 5px;
-    background-color: #daf2cc;
+    background-color: #f8f7e2;
     border-color: #e6e465;
+}
+
+#addProject-container {
+    padding: 12px;
+}
+
+#add-project-button {
+    padding: 10px 18px;
+    border: 1px solid #d8bb2e;
+    border-radius: 10px;
+    background-color: #e3ca4c;
+    color: #292929;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#add-project-button:hover {
+    background-color: #d6bb37;
+}
+
+#project-form-container {
+    margin-top: 12px;
 }
 
 .jeongsook {
@@ -114,7 +137,6 @@ footer {
         font-size: 1.5rem;
     }
 }
-
 
 
 
