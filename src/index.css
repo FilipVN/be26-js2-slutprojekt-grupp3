@@ -1,142 +1,216 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-
 
 html {
-    font-size: 16px;
-    
+  font-size: 16px;
 }
-
 
 body {
+  body {
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif, serif;
-    background: #ffffff;
-    color: #111111;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #ffffff;
+    background: #242424;
+  }
 }
-
 
 .index-header {
-    width: 100%;
-    height: 150px;
-    max-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 150px;
+  max-height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    background-image:
-        linear-gradient(
-            rgba(0, 0, 0, 0.35),
-            rgba(0, 0, 0, 0.15)
-        ),
-        url("./assets/header.png");
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.15)),
+    url("./assets/header.png");
 
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-
 
 .index-header h1 {
-    margin: 0;
-    padding: 10px;
-    font-size: clamp(2.5rem, 4vw, 2.5rem);
-    font-style: italic;
-    text-align: center;
-    line-height: 1.2;
-    color: #170e01;
+  margin: 0;
+  padding: 10px;
+  font-size: clamp(2.5rem, 4vw, 2.5rem);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.2;
+  color: #170e01;
 }
 
-
 main {
-    width: 100%;
+  width: 100%;
 }
 
 .joanna {
-    margin: 5px;
-    background-color: #f8f7e2;
-    border-color: #e6e465;
+  margin: 5px;
+  background-color: transparent;
+  border-color: transparent;
 }
 
 #addProject-container {
-    padding: 12px;
+  padding: 12px;
 }
 
 #add-project-button {
-    padding: 10px 18px;
-    border: 1px solid #d8bb2e;
-    border-radius: 10px;
-    background-color: #e3ca4c;
-    color: #292929;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
+  padding: 10px 18px;
+  border: 1px solid #d8bb2e;
+  border-radius: 10px;
+  background-color: #e3ca4c;
+  color: #292929;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 #add-project-button:hover {
-    background-color: #d6bb37;
+  background-color: #d6bb37;
 }
 
 #project-form-container {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 
 .jeongsook {
-    margin: 5px;
-    background-color: #f9f7e5;
-    border-color: #f4f3b1;
+  margin: 5px;
+  background-color: #f9f7e5;
+  border-color: #f4f3b1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 footer {
-    padding: 30px;
-    text-align: center;
-    color: #666;
+  padding: 30px;
+  text-align: center;
+  color: #666;
 }
-
-
-
 
 /*********************************/
 
 :focus-visible {
-    outline: 3px solid #03360a;
-    outline-offset: 3px;
+  outline: 3px solid #03360a;
+  outline-offset: 3px;
 }
 
 /*********************************/
 
-
 @media (max-width: 480px) {
-    .index-header {
-        height: 100px;
-    }
+  .index-header {
+    height: 100px;
+  }
 
-    .index-header h1 {
-        font-size: 1.5rem;
-    }
+  .index-header h1 {
+    font-size: 1.5rem;
+  }
 }
 
+/* Joanna-inspirerad Scrum Board-design */
 
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #ffffff;
+  background: #1a1a1a;
+}
 
+/* Sidhuvud med Scrum-bilden */
+.index-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+  width: 100%;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.2)),
+    url("./assets/scrum-board.png");
+  background-position: center 25%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.index-header h1 {
+  color: #ff9800;
+  text-align: center;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-style: italic;
+  -webkit-text-stroke: 1px white;
+}
+
+/* Projektkort */
+.project-board-card {
+  background: rgba(26, 26, 26, 0.94);
+  color: #ffffff;
+  border: 2px solid #f0c347;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 12px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.project-board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 18px rgba(240, 195, 71, 0.3);
+}
+
+.project-board-card h4 {
+  color: #ff9800;
+  margin-bottom: 12px;
+}
+
+.project-board-card p {
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+/* Dölj expanderad information när kortet är stängt */
+.project-board-card [hidden] {
+  display: none !important;
+}
+
+/* Mobilanpassning */
+@media (max-width: 700px) {
+  .index-header {
+    min-height: 120px;
+  }
+
+  .project-board-card {
+    margin: 8px 0;
+    padding: 14px;
+  }
+}
+
+.project-board-card {
+  background: rgba(26, 26, 26, 0.94);
+  color: #ffffff;
+  border: 2px solid #f0c347;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 12px 0;
+  min-height: 100px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.project-board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 18px rgba(240, 195, 71, 0.3);
+}
+
+.project-board-card h4 {
+  color: #ff9800;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.project-board-card p {
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
