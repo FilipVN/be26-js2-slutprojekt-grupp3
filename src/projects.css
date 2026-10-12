@@ -222,3 +222,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+.move-project-button {
+  margin-top: 12px;
+  padding: 9px 14px;
+  border: 1px solid #d6ad55;
+  border-radius: 6px;
+  background-color: #d6ad55;
+  color: #20231f;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.move-project-button:hover {
+  background-color: #edc875;
+}
+
+.move-project-button:focus-visible {
+  outline: 2px solid #edc875;
+  outline-offset: 3px;
+}

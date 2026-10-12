@@ -1,4 +1,10 @@
-import { get, onValue, ref, type DataSnapshot } from "firebase/database";
+import {
+  get,
+  onValue,
+  ref,
+  update,
+  type DataSnapshot,
+} from "firebase/database";
 import { database } from "./firebase";
 
 // These interfaces describe the data we get from Firebase.
@@ -107,7 +113,14 @@ class ProjectRepository {
     const snapshot = await get(this.projectsReference);
     return this.makeProjects(snapshot);
   }
-
+  public async updateStatus(
+    projectId: string,
+    status: ProjectStatus,
+  ): Promise<void> {
+    await update(ref(database, `projects/${projectId}`), {
+      status,
+    });
+  }
   public listenForChanges(
     onProjectsChanged: (projects: Project[]) => void,
     onError: (error: Error) => void,
@@ -381,6 +394,39 @@ class ProjectBoard {
     }
 
     card.appendChild(details);
+
+    const status = project.getStatus();
+    const moveButton = document.createElement("button");
+    moveButton.type = "button";
+    moveButton.className = "move-project-button";
+
+    if (status === "todo") {
+      moveButton.textContent = "Start Progress →";
+    } else if (status === "inprogress") {
+      moveButton.textContent = "Mark as Done →";
+    } else {
+      moveButton.textContent = "← Move to Progress";
+    }
+
+    moveButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      const nextStatus: ProjectStatus =
+        status === "todo"
+          ? "inprogress"
+          : status === "inprogress"
+            ? "done"
+            : "inprogress";
+
+      void this.repository
+        .updateStatus(project.getId(), nextStatus)
+        .catch((error: unknown) => {
+          console.error("Could not update project status:", error);
+          this.showMessage("Could not update project status.");
+        });
+    });
+
+    card.appendChild(moveButton);
 
     const toggleDetails = (): void => {
       details.hidden = !details.hidden;
