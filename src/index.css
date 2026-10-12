@@ -20,32 +20,34 @@ body {
 
 
 .index-header {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+    width: 100%;
+    height: 150px;
+    max-height: 150px;
     display: flex;
-    width: calc(100% - 5px);
-    min-height: clamp(150px, 60vw, 200px);
     justify-content: center;
+    align-items: center;
+
     background-image:
-        linear-gradient(rgba(75, 74, 74, 0.5),
-            rgba(240, 55, 55, 0.12)),
-        url("./assets/scrum-board.png");
-    background-position: center;
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.15)
+        ),
+        url("./assets/header.png");
+
+    background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-.index-header h1 {
-    margin: 20px;
-    font-style: italic;
 
-    /* Responsive text */
-    font-size: clamp(1.5rem, 20vw, 2.5rem);
-    line-height: 0.9;
+.index-header h1 {
+    margin: 0;
+    padding: 10px;
+    font-size: clamp(2.5rem, 4vw, 2.5rem);
+    font-style: italic;
     text-align: center;
-    color: #ff9800;
-    -webkit-text-stroke: clamp(1px, 0.15vw, 2px) white;
+    line-height: 1.2;
+    color: #170e01;
 }
 
 
@@ -103,23 +105,16 @@ footer {
 /*********************************/
 
 
-
-
-
-
-
-/* -------------------------
-   Mobile
-------------------------- */
-
-@media (max-width: 700px) {
-
-
+@media (max-width: 480px) {
     .index-header {
-        min-height: 50px;
+        height: 100px;
     }
 
     .index-header h1 {
-         font-size: clamp(1.5rem, 12vw, 3rem);
+        font-size: 1.5rem;
     }
 }
+
+
+
+
