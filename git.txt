@@ -1,6 +1,8 @@
 git status
 git init
 git remote add origin https://github.com/Grilzyyy/be26-js2-slutprojekt-grupp3.git
+
+git remote set-url origin https://github.com/grit-park/be26-js2-slutprojekt-grupp3.git
 git remote -v
 
      /* set your branch to main
