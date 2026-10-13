@@ -22,6 +22,7 @@ interface Task {
 
 interface ProjectData {
   name: string;
+  priority?: string;
   description?: string;
   deadline?: string;
   status?: string;
@@ -56,6 +57,9 @@ class Project {
 
   public getDeadline(): string {
     return this.data.deadline || "—";
+  }
+  public getPriority(): string {
+    return this.data.priority || "low";
   }
 
   public getMembers(): Member[] {
@@ -372,6 +376,20 @@ class ProjectBoard {
     );
     details.appendChild(
       makeTextElement("p", `Deadline: ${project.getDeadline()}`),
+    );
+
+    const priority = project.getPriority().toLowerCase();
+
+    let priorityLabel = "🟢 Low";
+
+    if (priority === "medium") {
+      priorityLabel = "🟡 Medium";
+    } else if (priority === "high") {
+      priorityLabel = "🔴 High";
+    }
+
+    details.appendChild(
+      makeTextElement("p", `Priority: ${priorityLabel}`, "card-priority"),
     );
 
     details.appendChild(
