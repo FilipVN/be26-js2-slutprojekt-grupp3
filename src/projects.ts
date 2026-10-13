@@ -341,6 +341,13 @@ class ProjectBoard {
   private createProjectCard(project: Project): HTMLElement {
     const card = document.createElement("article");
     card.className = "project-board-card";
+    const addMemberButton = document.createElement("button");
+    addMemberButton.type = "button";
+    addMemberButton.className = "add-member-button";
+    addMemberButton.textContent = "+ Add Member";
+
+    card.appendChild(addMemberButton);
+
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-expanded", "false");
@@ -427,7 +434,25 @@ class ProjectBoard {
     });
 
     card.appendChild(moveButton);
+    if (status === "inprogress") {
+      const backButton = document.createElement("button");
+      backButton.type = "button";
+      backButton.className = "move-project-button";
+      backButton.textContent = "← Move to To Do";
 
+      backButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        void this.repository
+          .updateStatus(project.getId(), "todo")
+          .catch((error: unknown) => {
+            console.error("Could not update project status:", error);
+            this.showMessage("Could not update project status.");
+          });
+      });
+
+      card.appendChild(backButton);
+    }
     const toggleDetails = (): void => {
       details.hidden = !details.hidden;
       card.setAttribute("aria-expanded", String(!details.hidden));

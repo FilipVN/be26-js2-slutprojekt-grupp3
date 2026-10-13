@@ -243,3 +243,25 @@
   outline: 2px solid #edc875;
   outline-offset: 3px;
 }
+
+.move-project-button {
+  margin-right: 8px;
+}
+
+.add-member-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.project-board-card {
+  position: relative;
+}
