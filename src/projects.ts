@@ -6,6 +6,7 @@ import {
   type DataSnapshot,
 } from "firebase/database";
 import { database } from "./firebase";
+import { initMemberForm } from "./member-form";
 
 // These interfaces describe the data we get from Firebase.
 interface Member {
@@ -58,6 +59,7 @@ class Project {
   public getDeadline(): string {
     return this.data.deadline || "—";
   }
+
   public getPriority(): string {
     return this.data.priority || "low";
   }
@@ -345,12 +347,6 @@ class ProjectBoard {
   private createProjectCard(project: Project): HTMLElement {
     const card = document.createElement("article");
     card.className = "project-board-card";
-    const addMemberButton = document.createElement("button");
-    addMemberButton.type = "button";
-    addMemberButton.className = "add-member-button";
-    addMemberButton.textContent = "+ Add Member";
-
-    card.appendChild(addMemberButton);
 
     card.tabIndex = 0;
     card.setAttribute("role", "button");
@@ -377,17 +373,13 @@ class ProjectBoard {
     details.appendChild(
       makeTextElement("p", `Deadline: ${project.getDeadline()}`),
     );
-
     const priority = project.getPriority().toLowerCase();
-
-    let priorityLabel = "🟢 Low";
-
-    if (priority === "medium") {
-      priorityLabel = "🟡 Medium";
-    } else if (priority === "high") {
-      priorityLabel = "🔴 High";
-    }
-
+    const priorityLabel =
+      priority === "high"
+        ? "🔴 High"
+        : priority === "medium"
+          ? "🟡 Medium"
+          : "🟢 Low";
     details.appendChild(
       makeTextElement("p", `Priority: ${priorityLabel}`, "card-priority"),
     );
@@ -418,9 +410,32 @@ class ProjectBoard {
       details.appendChild(makeTextElement("p", text, "card-member"));
     }
 
-    card.appendChild(details);
-
     const status = project.getStatus();
+    const cardActions = document.createElement("div");
+    cardActions.className = "project-card-actions";
+
+    if (status === "todo" || status === "inprogress") {
+      const addMemberButton = document.createElement("button");
+      addMemberButton.type = "button";
+      addMemberButton.className = "add-member-button";
+      addMemberButton.textContent = "+ Add Member";
+      addMemberButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const memberFormContainer = document.querySelector<HTMLElement>(
+          "#member-form-container",
+        );
+
+        if (!memberFormContainer) {
+          this.showMessage("Could not open the member form.");
+          return;
+        }
+
+        memberFormContainer.hidden = false;
+        void this.loadMemberForm(memberFormContainer, project.getId());
+      });
+      cardActions.appendChild(addMemberButton);
+    }
+
     const moveButton = document.createElement("button");
     moveButton.type = "button";
     moveButton.className = "move-project-button";
@@ -451,7 +466,7 @@ class ProjectBoard {
         });
     });
 
-    card.appendChild(moveButton);
+    cardActions.appendChild(moveButton);
     if (status === "inprogress") {
       const backButton = document.createElement("button");
       backButton.type = "button";
@@ -469,8 +484,11 @@ class ProjectBoard {
           });
       });
 
-      card.appendChild(backButton);
+      cardActions.appendChild(backButton);
     }
+    details.appendChild(cardActions);
+    card.appendChild(details);
+
     const toggleDetails = (): void => {
       details.hidden = !details.hidden;
       card.setAttribute("aria-expanded", String(!details.hidden));
@@ -486,6 +504,33 @@ class ProjectBoard {
     });
 
     return card;
+  }
+
+  private async loadMemberForm(
+    container: HTMLElement,
+    projectId: string,
+  ): Promise<void> {
+    try {
+      const response = await fetch("./member-form.html");
+
+      if (!response.ok) {
+        throw new Error(`Failed to load member form: ${response.statusText}`);
+      }
+
+      container.innerHTML = await response.text();
+      const form = container.querySelector<HTMLFormElement>("#member-form");
+
+      if (!form) {
+        throw new Error("Member form element was not found.");
+      }
+
+      initMemberForm(form, projectId, () => {
+        this.showMessage("Member added to project.");
+      });
+    } catch (error: unknown) {
+      console.error("Could not load member form:", error);
+      container.textContent = "Could not load the member form.";
+    }
   }
 
   private countMemberProjects(memberName: string): number {

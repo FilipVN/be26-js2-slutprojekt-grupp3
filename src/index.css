@@ -6,15 +6,16 @@
 
 html {
   font-size: 16px;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 body {
-  body {
-    min-height: 100vh;
-    font-family: Georgia, "Times New Roman", serif;
-    color: #ffffff;
-    background: #242424;
-  }
+  min-height: 100vh;
+  font-family: inherit;
+  color: #ffffff;
+  background: #242424;
 }
 
 .index-header {
@@ -38,7 +39,9 @@ body {
   margin: 0;
   padding: 10px;
   font-size: clamp(2.5rem, 4vw, 2.5rem);
-  font-style: italic;
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   text-align: center;
   line-height: 1.2;
   color: #170e01;
@@ -111,7 +114,7 @@ footer {
 /* Joanna-inspirerad Scrum Board-design */
 
 body {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   color: #ffffff;
   background: #1a1a1a;
 }
@@ -135,7 +138,9 @@ body {
   color: #ff9800;
   text-align: center;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
-  font-style: italic;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   -webkit-text-stroke: 1px white;
 }
 

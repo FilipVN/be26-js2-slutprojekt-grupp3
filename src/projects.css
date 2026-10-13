@@ -1,8 +1,16 @@
 .scrum-board {
   padding: 24px;
-  background: #242424;
-  font-family: Arial, sans-serif;
+  background-image:
+    linear-gradient(rgb(0 0 0 / 58%), rgb(0 0 0 / 58%)),
+    url("./assets/blackboard.jpg");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   color: #ffffff;
+  text-shadow: 0 1px 2px #000000;
 }
 
 .scrum-board * {
@@ -12,7 +20,10 @@
 .scrum-board h2 {
   margin: 0 0 18px;
   font-size: clamp(1.5rem, 3vw, 2rem);
-  color: #ff9800;
+  color: #ffc04d;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 3px #000000;
 }
 
 .board-toolbar {
@@ -30,15 +41,17 @@
   gap: 4px;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #dddddd;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  text-shadow: 0 1px 2px #000000;
 }
 
 .board-toolbar select {
   display: block;
   width: 100%;
   padding: 8px 10px;
-  background: #303030;
-  border: 1px solid #5b5547;
+  background: #181818e8;
+  border: 1px solid #d6ad55;
   border-radius: 7px;
   font: inherit;
   font-weight: 400;
@@ -55,7 +68,9 @@
 #board-message {
   min-height: 1.4em;
   margin: 0 0 14px;
-  color: #dddddd;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 1px 2px #000000;
 }
 
 .board-columns {
@@ -76,17 +91,19 @@
   gap: 10px;
   margin: 0 0 18px;
   padding: 12px;
-  border: 1px solid #5b5547;
+  border: 1px solid #e0bc68;
   border-radius: 10px;
   color: #ffffff;
   font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   text-align: center;
 }
 
 .column-heading span {
   font-size: 0.85rem;
   padding: 3px 9px;
-  background: #ffffff20;
+  background: #00000080;
   border-radius: 20px;
   color: #ffffff;
 }
@@ -94,19 +111,19 @@
 /* To Do */
 .board-column:nth-child(1) .column-heading,
 .board-column:nth-child(1) .project-board-card {
-  background: #26352b;
+  background: rgb(24 52 35 / 92%);
 }
 
 /* In Progress */
 .board-column:nth-child(2) .column-heading,
 .board-column:nth-child(2) .project-board-card {
-  background: #3a3321;
+  background: rgb(62 48 20 / 92%);
 }
 
 /* Done */
 .board-column:nth-child(3) .column-heading,
 .board-column:nth-child(3) .project-board-card {
-  background: #3a2628;
+  background: rgb(61 29 32 / 92%);
 }
 
 .column-cards {
@@ -118,8 +135,8 @@
   border-radius: 12px;
   padding: 16px;
   min-width: 0;
-  border: 1px solid #5b5547;
-  box-shadow: 0 4px 12px #00000030;
+  border: 1px solid #e0bc68;
+  box-shadow: 0 4px 12px #00000080;
   overflow-wrap: anywhere;
   color: #ffffff;
   cursor: pointer;
@@ -135,14 +152,18 @@
 
 .project-board-card h4 {
   margin: 0 0 8px;
-  color: #ff9800;
+  color: #ffd166;
+  text-shadow: 0 2px 3px #000000;
   font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
 }
 
 .project-board-card p {
   margin: 5px 0;
   font-size: 0.85rem;
   line-height: 1.4;
+  letter-spacing: 0.005em;
 }
 
 .project-board-card strong {
@@ -157,17 +178,22 @@
 
 .project-board-card .card-member {
   margin: 4px 0;
-  color: #eeeeee;
+  color: #ffffff;
 }
 
 .project-board-card .card-empty {
-  color: #bbbbbb;
+  color: #eeeeee;
   font-style: italic;
+}
+
+.project-board-card .card-priority {
+  color: #ffd98a;
+  font-weight: 600;
 }
 
 .project-board-card .card-task-count {
   font-size: 0.8rem;
-  color: #dddddd;
+  color: #ffffff;
 }
 
 /* Keep expanded information hidden until the card is clicked */
@@ -178,10 +204,10 @@
 .board-empty {
   margin: 0;
   padding: 24px 12px;
-  border: 2px dashed #5b5547;
+  border: 2px dashed #e0bc68;
   border-radius: 16px;
   text-align: center;
-  color: #cccccc;
+  color: #ffffff;
 }
 
 .visually-hidden {
@@ -224,13 +250,15 @@
 }
 
 .move-project-button {
-  margin-top: 12px;
-  padding: 9px 14px;
+  margin: 0;
+  padding: 5px 7px;
   border: 1px solid #d6ad55;
-  border-radius: 6px;
+  border-radius: 5px;
   background-color: #d6ad55;
   color: #20231f;
+  font-size: 0.72rem;
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -244,22 +272,33 @@
   outline-offset: 3px;
 }
 
-.move-project-button {
-  margin-right: 8px;
+.project-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
 }
 
 .add-member-button {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 6px 10px;
-  font-size: 12px;
+  margin: 0;
+  padding: 5px 7px;
+  border: 1px solid #2563eb;
+  border-radius: 5px;
+  background: #2563eb;
   color: #ffffff;
-  background-color: #2563eb;
-  border: none;
-  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
-  z-index: 2;
+}
+
+.add-member-button:hover {
+  background: #1d4ed8;
+}
+
+.add-member-button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
 }
 
 .project-board-card {

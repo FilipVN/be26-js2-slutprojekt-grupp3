@@ -1,0 +1,24 @@
+<!--form-container in index.html-->
+<section class="member-section">
+
+    <h2>Add a New member</h2>
+    <form id="member-form">
+        <label for="project-member-name">Member</label>
+        <input type="text" id="project-member-name" list="member-name-list" placeholder="Member name" required>
+        <datalist id="member-name-list"></datalist>
+
+        <label for="project-member-category">Member Category</label>
+        <select id="project-member-category" required>
+            <option value="owner">Owner </option>
+            <option value="scrum master">Scrum Master </option>
+            <option value="developer">Developer </option>
+        </select>
+
+
+        <div class="member-form-actions">
+            <button type="submit" id="add-member-button"> Add member </button>
+            <button type="button" id="cancel-member-button">Cancel</button>
+        </div>
+    </form>
+
+</section>
