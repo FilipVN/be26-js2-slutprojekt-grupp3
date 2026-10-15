@@ -628,16 +628,71 @@ class ProjectBoard {
       );
     }
 
-    tasks.forEach(({ task }) => {
-      const taskRow = document.createElement("div");
-      taskRow.className = "card-task";
+    //createProjectCard()
+tasks.forEach(({ key, task }) => {
 
-      taskRow.appendChild(
-        makeTextElement("span", task.title || "Untitled task"),
+  const taskRow = document.createElement("div");
+  taskRow.className = "card-task";
+
+  // Task title
+  const taskTitle = document.createElement("span");
+  taskTitle.textContent = task.title || "Untitled task";
+
+  // Priority dropdown
+  const prioritySelect = document.createElement("select");
+  prioritySelect.className = "task-priority";
+
+  prioritySelect.innerHTML = `
+    <option value="low">🟢 Low</option>
+    <option value="medium">🟡 Medium</option>
+    <option value="high">🔴 High</option>
+  `;
+
+  // Show current priority
+  prioritySelect.value = task.priority || "low";
+
+  // Prevent clicking the dropdown from closing the project card
+  prioritySelect.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  prioritySelect.addEventListener("keydown", (event) => {
+    event.stopPropagation();
+  });
+
+  // Change priority in Firebase
+  prioritySelect.addEventListener("change", async (event) => {
+    event.stopPropagation();
+
+    const newPriority = prioritySelect.value as Priority;
+    const oldPriority = task.priority || "low";
+
+    prioritySelect.disabled = true;
+
+    try {
+      await this.repository.updateTaskPriority(
+        project.getId(),
+        key,
+        newPriority
       );
 
-      details.appendChild(taskRow);
-    });
+      console.log("Task priority updated:", newPriority);
+
+    } catch (error) {
+      console.error("Could not update task priority:", error);
+      prioritySelect.value = oldPriority;
+      alert("Could not update task priority.");
+    } finally {
+      prioritySelect.disabled = false;
+    }
+  });
+
+  taskRow.appendChild(taskTitle);
+  taskRow.appendChild(prioritySelect);
+
+  details.appendChild(taskRow);
+
+});
 
     card.appendChild(details);
 
