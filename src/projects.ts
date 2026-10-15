@@ -21,6 +21,7 @@ interface Task {
   category?: string;
   assignedTo?: string;
   memberId?: string;
+  priority?: Priority;
 }
 
 interface ProjectData {
@@ -35,6 +36,7 @@ interface ProjectData {
 }
 
 type ProjectStatus = "todo" | "inprogress" | "done";
+type Priority = "low" | "medium" | "high";
 
 // This class represents one project.
 class Project {
@@ -152,6 +154,38 @@ class ProjectRepository {
       deadline,
     });
     }
+
+  //update Priority 2026-10-15 
+  public async updateTaskPriority(
+  projectId: string,
+  taskKey: string,
+  priority: Priority
+): Promise<void> {
+
+  const taskRef = ref(
+    database,
+    `projects/${projectId}/tasks/${taskKey}`
+  );
+
+  const snapshot = await get(taskRef);
+
+  if (!snapshot.exists()) {
+    throw new Error("Task not found");
+  }
+
+  const task = snapshot.val();
+
+  if (typeof task === "string") {
+    await set(taskRef, {
+      title: task,
+      priority: priority
+    });
+  } else {
+    await update(taskRef, {
+      priority: priority
+    });
+  }
+}
 
   public async addMember(
     projectId: string,
