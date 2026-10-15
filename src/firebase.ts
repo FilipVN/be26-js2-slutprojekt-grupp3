@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getDatabase, forceLongPolling } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -12,6 +12,9 @@ const firebaseConfig = {
   messagingSenderId: "452280630222",
   appId: "1:452280630222:web:257bb0352c438d04e4899f"
 };
+
+
+forceLongPolling();
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
