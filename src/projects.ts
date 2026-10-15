@@ -36,11 +36,7 @@ interface ProjectData {
 }
 
 type ProjectStatus = "todo" | "inprogress" | "done";
-<<<<<<< Updated upstream
 type Priority = "low" | "medium" | "high";
-=======
-type ProjectPriority = "low" | "medium" | "high";
->>>>>>> Stashed changes
 
 // This class represents one project.
 class Project {
@@ -150,7 +146,6 @@ class ProjectRepository {
       status,
     });
   }
-<<<<<<< Updated upstream
   public async updateDeadline(
     projectId: string,
     deadline: string,
@@ -158,39 +153,37 @@ class ProjectRepository {
     await update(ref(database, `projects/${projectId}`), {
       deadline,
     });
+  }
+
+  public async updatePriority(
+    projectId: string,
+    priority: Priority,
+  ): Promise<void> {
+    await update(ref(database, `projects/${projectId}`), {
+      priority,
+    });
+  }
+
+  public async updateTaskPriority(
+    projectId: string,
+    taskKey: string,
+    priority: Priority,
+  ): Promise<void> {
+    const taskRef = ref(database, `projects/${projectId}/tasks/${taskKey}`);
+    const snapshot = await get(taskRef);
+
+    if (!snapshot.exists()) {
+      throw new Error("Task not found");
     }
 
-  //update Priority 2026-10-15 
-  public async updateTaskPriority(
-  projectId: string,
-  taskKey: string,
-  priority: Priority
-): Promise<void> {
+    const task = snapshot.val();
 
-  const taskRef = ref(
-    database,
-    `projects/${projectId}/tasks/${taskKey}`
-  );
-
-  const snapshot = await get(taskRef);
-
-  if (!snapshot.exists()) {
-    throw new Error("Task not found");
+    if (typeof task === "string") {
+      await set(taskRef, { title: task, priority });
+    } else {
+      await update(taskRef, { priority });
+    }
   }
-
-  const task = snapshot.val();
-
-  if (typeof task === "string") {
-    await set(taskRef, {
-      title: task,
-      priority: priority
-    });
-  } else {
-    await update(taskRef, {
-      priority: priority
-    });
-  }
-}
 
   public async addMember(
     projectId: string,
@@ -203,20 +196,8 @@ class ProjectRepository {
       name: memberName,
       category: memberCategory,
     });
-    
-  }
-=======
-
-  public async updatePriority(
-    projectId: string,
-    priority: ProjectPriority,
-  ): Promise<void> {
-    await update(ref(database, `projects/${projectId}`), {
-      priority,
-    });
   }
 
->>>>>>> Stashed changes
   public async deleteProject(projectId: string): Promise<void> {
     await remove(ref(database, `projects/${projectId}`));
   }
@@ -485,20 +466,23 @@ class ProjectBoard {
     addMemberButton.type = "button";
     addMemberButton.className = "add-member-button";
     addMemberButton.textContent = "+ Add Member";
-    
+
     addMemberButton.addEventListener("click", async (event) => {
       event.stopPropagation();
       const memberName = window.prompt("Enter member name:");
       if (!memberName || memberName.trim() === "") {
         return;
       }
-      const memberCategory = window.prompt("Enter member role (e.g. Developer, Designer):", "Developer");
+      const memberCategory = window.prompt(
+        "Enter member role (e.g. Developer, Designer):",
+        "Developer",
+      );
 
       try {
         await this.repository.addMember(
           project.getId(),
           memberName.trim(),
-          memberCategory ? memberCategory.trim() : "member"
+          memberCategory ? memberCategory.trim() : "member",
         );
         alert("Member added successfully!");
       } catch (error) {
@@ -566,7 +550,8 @@ class ProjectBoard {
 
     const deadlineInput = document.createElement("input");
     deadlineInput.type = "date";
-    deadlineInput.value = project.getDeadline() !== "—" ? project.getDeadline() : "";
+    deadlineInput.value =
+      project.getDeadline() !== "—" ? project.getDeadline() : "";
     deadlineInput.style.marginLeft = "5px";
     deadlineInput.style.marginRight = "5px";
 
@@ -580,20 +565,20 @@ class ProjectBoard {
     saveDeadlineBtn.addEventListener("click", async (e) => {
       e.stopPropagation();
       try {
-        await this.repository.updateDeadline(project.getId(), deadlineInput.value);
+        await this.repository.updateDeadline(
+          project.getId(),
+          deadlineInput.value,
+        );
         alert("Deadline updated successfully!");
       } catch (error) {
         console.error("Could not update deadline:", error);
         alert("Could not update deadline.");
       }
-      
     });
-    
 
     deadlineContainer.appendChild(deadlineInput);
     deadlineContainer.appendChild(saveDeadlineBtn);
     details.appendChild(deadlineContainer);
-    
 
     const priorityLabel = makeTextElement(
       "label",
@@ -608,7 +593,7 @@ class ProjectBoard {
       `Priority for ${project.getName()}`,
     );
 
-    const priorities: { value: ProjectPriority; label: string }[] = [
+    const priorities: { value: Priority; label: string }[] = [
       { value: "low", label: "🟢 Low" },
       { value: "medium", label: "🟡 Medium" },
       { value: "high", label: "🔴 High" },
@@ -630,7 +615,7 @@ class ProjectBoard {
     prioritySelect.addEventListener("change", async (event) => {
       event.stopPropagation();
 
-      const newPriority = prioritySelect.value as ProjectPriority;
+      const newPriority = prioritySelect.value as Priority;
 
       try {
         await this.repository.updatePriority(project.getId(), newPriority);
@@ -681,70 +666,67 @@ class ProjectBoard {
     }
 
     //createProjectCard()
-tasks.forEach(({ key, task }) => {
+    tasks.forEach(({ key, task }) => {
+      const taskRow = document.createElement("div");
+      taskRow.className = "card-task";
 
-  const taskRow = document.createElement("div");
-  taskRow.className = "card-task";
+      // Task title
+      const taskTitle = document.createElement("span");
+      taskTitle.textContent = task.title || "Untitled task";
 
-  // Task title
-  const taskTitle = document.createElement("span");
-  taskTitle.textContent = task.title || "Untitled task";
+      // Priority dropdown
+      const prioritySelect = document.createElement("select");
+      prioritySelect.className = "task-priority";
 
-  // Priority dropdown
-  const prioritySelect = document.createElement("select");
-  prioritySelect.className = "task-priority";
-
-  prioritySelect.innerHTML = `
+      prioritySelect.innerHTML = `
     <option value="low">🟢 Low</option>
     <option value="medium">🟡 Medium</option>
     <option value="high">🔴 High</option>
   `;
 
-  // Show current priority
-  prioritySelect.value = task.priority || "low";
+      // Show current priority
+      prioritySelect.value = task.priority || "low";
 
-  // Prevent clicking the dropdown from closing the project card
-  prioritySelect.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
+      // Prevent clicking the dropdown from closing the project card
+      prioritySelect.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
 
-  prioritySelect.addEventListener("keydown", (event) => {
-    event.stopPropagation();
-  });
+      prioritySelect.addEventListener("keydown", (event) => {
+        event.stopPropagation();
+      });
 
-  // Change priority in Firebase
-  prioritySelect.addEventListener("change", async (event) => {
-    event.stopPropagation();
+      // Change priority in Firebase
+      prioritySelect.addEventListener("change", async (event) => {
+        event.stopPropagation();
 
-    const newPriority = prioritySelect.value as Priority;
-    const oldPriority = task.priority || "low";
+        const newPriority = prioritySelect.value as Priority;
+        const oldPriority = task.priority || "low";
 
-    prioritySelect.disabled = true;
+        prioritySelect.disabled = true;
 
-    try {
-      await this.repository.updateTaskPriority(
-        project.getId(),
-        key,
-        newPriority
-      );
+        try {
+          await this.repository.updateTaskPriority(
+            project.getId(),
+            key,
+            newPriority,
+          );
 
-      console.log("Task priority updated:", newPriority);
+          console.log("Task priority updated:", newPriority);
+        } catch (error) {
+          console.error("Could not update task priority:", error);
+          prioritySelect.value = oldPriority;
+          alert("Could not update task priority.");
+        } finally {
+          prioritySelect.disabled = false;
+        }
+      });
 
-    } catch (error) {
-      console.error("Could not update task priority:", error);
-      prioritySelect.value = oldPriority;
-      alert("Could not update task priority.");
-    } finally {
-      prioritySelect.disabled = false;
-    }
-  });
+      taskRow.appendChild(taskTitle);
+      taskRow.appendChild(prioritySelect);
 
-  taskRow.appendChild(taskTitle);
-  taskRow.appendChild(prioritySelect);
-
-  details.appendChild(taskRow);
-
-});
+      details.appendChild(taskRow);
+    });
 
     card.appendChild(details);
 
