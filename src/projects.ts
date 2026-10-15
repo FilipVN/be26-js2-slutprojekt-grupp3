@@ -36,7 +36,11 @@ interface ProjectData {
 }
 
 type ProjectStatus = "todo" | "inprogress" | "done";
+<<<<<<< Updated upstream
 type Priority = "low" | "medium" | "high";
+=======
+type ProjectPriority = "low" | "medium" | "high";
+>>>>>>> Stashed changes
 
 // This class represents one project.
 class Project {
@@ -146,6 +150,7 @@ class ProjectRepository {
       status,
     });
   }
+<<<<<<< Updated upstream
   public async updateDeadline(
     projectId: string,
     deadline: string,
@@ -200,6 +205,18 @@ class ProjectRepository {
     });
     
   }
+=======
+
+  public async updatePriority(
+    projectId: string,
+    priority: ProjectPriority,
+  ): Promise<void> {
+    await update(ref(database, `projects/${projectId}`), {
+      priority,
+    });
+  }
+
+>>>>>>> Stashed changes
   public async deleteProject(projectId: string): Promise<void> {
     await remove(ref(database, `projects/${projectId}`));
   }
@@ -578,19 +595,54 @@ class ProjectBoard {
     details.appendChild(deadlineContainer);
     
 
-    const priority = project.getPriority().toLowerCase();
+    const priorityLabel = makeTextElement(
+      "label",
+      "Project priority: ",
+      "card-priority",
+    );
 
-    let priorityLabel = "🟢 Low";
+    const prioritySelect = document.createElement("select");
+    prioritySelect.className = "project-priority-select";
+    prioritySelect.setAttribute(
+      "aria-label",
+      `Priority for ${project.getName()}`,
+    );
 
-    if (priority === "medium") {
-      priorityLabel = "🟡 Medium";
-    } else if (priority === "high") {
-      priorityLabel = "🔴 High";
+    const priorities: { value: ProjectPriority; label: string }[] = [
+      { value: "low", label: "🟢 Low" },
+      { value: "medium", label: "🟡 Medium" },
+      { value: "high", label: "🔴 High" },
+    ];
+
+    for (const item of priorities) {
+      const option = document.createElement("option");
+      option.value = item.value;
+      option.textContent = item.label;
+      prioritySelect.appendChild(option);
     }
 
-    details.appendChild(
-      makeTextElement("p", `Priority: ${priorityLabel}`, "card-priority"),
-    );
+    prioritySelect.value = project.getPriority().toLowerCase();
+
+    prioritySelect.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+
+    prioritySelect.addEventListener("change", async (event) => {
+      event.stopPropagation();
+
+      const newPriority = prioritySelect.value as ProjectPriority;
+
+      try {
+        await this.repository.updatePriority(project.getId(), newPriority);
+        this.showMessage("Project priority updated!");
+      } catch (error) {
+        console.error("Could not update project priority:", error);
+        this.showMessage("Could not update project priority.");
+      }
+    });
+
+    priorityLabel.appendChild(prioritySelect);
+    details.appendChild(priorityLabel);
 
     details.appendChild(
       makeTextElement(
