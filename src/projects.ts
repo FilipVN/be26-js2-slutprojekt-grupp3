@@ -3,10 +3,10 @@ import {
   onValue,
   ref,
   update,
+  remove,
   type DataSnapshot,
 } from "firebase/database";
 import { database } from "./firebase";
-import { initMemberForm } from "./member-form";
 
 // These interfaces describe the data we get from Firebase.
 interface Member {
@@ -59,7 +59,6 @@ class Project {
   public getDeadline(): string {
     return this.data.deadline || "—";
   }
-
   public getPriority(): string {
     return this.data.priority || "low";
   }
@@ -91,6 +90,22 @@ class Project {
       }
 
       return task;
+    });
+  }
+
+  public getTaskEntries(): { key: string; task: Task }[] {
+    if (!this.data.tasks) {
+      return [];
+    }
+
+    return Object.entries(this.data.tasks).flatMap(([key, value]) => {
+      if (value == null) {
+        return [];
+      }
+
+      const task: Task = typeof value === "string" ? { title: value } : value;
+
+      return [{ key, task }];
     });
   }
 
@@ -127,6 +142,49 @@ class ProjectRepository {
       status,
     });
   }
+  public async deleteProject(projectId: string): Promise<void> {
+    await remove(ref(database, `projects/${projectId}`));
+  }
+  public async deleteTask(projectId: string, taskKey: string): Promise<void> {
+    const tasksRef = ref(database, `projects/${projectId}/tasks`);
+    const snapshot = await get(tasksRef);
+
+    if (!snapshot.exists()) {
+      throw new Error("Tasks not found");
+    }
+
+    const tasks = snapshot.val();
+
+    if (Array.isArray(tasks)) {
+      const index = Number(taskKey);
+
+      if (
+        !Number.isInteger(index) ||
+        index < 0 ||
+        index >= tasks.length ||
+        tasks[index] == null
+      ) {
+        throw new Error("Task not found");
+      }
+
+      const updatedTasks = tasks.filter(
+        (_task: unknown, i: number) => i !== index,
+      );
+
+      await update(ref(database, `projects/${projectId}`), {
+        tasks: updatedTasks,
+      });
+
+      return;
+    }
+
+    if (typeof tasks !== "object" || tasks === null || !(taskKey in tasks)) {
+      throw new Error("Task not found");
+    }
+
+    await remove(ref(database, `projects/${projectId}/tasks/${taskKey}`));
+  }
+
   public listenForChanges(
     onProjectsChanged: (projects: Project[]) => void,
     onError: (error: Error) => void,
@@ -180,6 +238,7 @@ function getSelectValue(id: string): string {
 class ProjectBoard {
   private projects: Project[] = [];
   private repository: ProjectRepository;
+  private expandedProjectIds = new Set<string>();
 
   public constructor(repository: ProjectRepository) {
     this.repository = repository;
@@ -347,7 +406,38 @@ class ProjectBoard {
   private createProjectCard(project: Project): HTMLElement {
     const card = document.createElement("article");
     card.className = "project-board-card";
+    const addMemberButton = document.createElement("button");
+    addMemberButton.type = "button";
+    addMemberButton.className = "add-member-button";
+    addMemberButton.textContent = "+ Add Member";
 
+    card.appendChild(addMemberButton);
+    const deleteProjectButton = document.createElement("button");
+    deleteProjectButton.type = "button";
+    deleteProjectButton.className = "delete-project-button";
+    deleteProjectButton.textContent = "Delete Project";
+
+    deleteProjectButton.addEventListener("click", async (event) => {
+      event.stopPropagation();
+
+      const confirmed = window.confirm(
+        `Delete project "${project.getName()}" and all its tasks?`,
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await this.repository.deleteProject(project.getId());
+        this.expandedProjectIds.delete(project.getId());
+      } catch (error) {
+        console.error("Could not delete project:", error);
+        this.showMessage("Could not delete project. Check the console.");
+      }
+    });
+
+    card.appendChild(deleteProjectButton);
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.setAttribute("aria-expanded", "false");
@@ -363,7 +453,8 @@ class ProjectBoard {
     );
 
     const details = document.createElement("div");
-    details.hidden = true;
+    details.hidden = !this.expandedProjectIds.has(project.getId());
+    card.setAttribute("aria-expanded", String(!details.hidden));
 
     details.appendChild(makeTextElement("p", `ID: ${project.getId()}`));
     details.appendChild(makeTextElement("p", `Name: ${project.getName()}`));
@@ -373,13 +464,17 @@ class ProjectBoard {
     details.appendChild(
       makeTextElement("p", `Deadline: ${project.getDeadline()}`),
     );
+
     const priority = project.getPriority().toLowerCase();
-    const priorityLabel =
-      priority === "high"
-        ? "🔴 High"
-        : priority === "medium"
-          ? "🟡 Medium"
-          : "🟢 Low";
+
+    let priorityLabel = "🟢 Low";
+
+    if (priority === "medium") {
+      priorityLabel = "🟡 Medium";
+    } else if (priority === "high") {
+      priorityLabel = "🔴 High";
+    }
+
     details.appendChild(
       makeTextElement("p", `Priority: ${priorityLabel}`, "card-priority"),
     );
@@ -410,32 +505,30 @@ class ProjectBoard {
       details.appendChild(makeTextElement("p", text, "card-member"));
     }
 
-    const status = project.getStatus();
-    const cardActions = document.createElement("div");
-    cardActions.className = "project-card-actions";
+    details.appendChild(makeTextElement("h5", "Tasks"));
 
-    if (status === "todo" || status === "inprogress") {
-      const addMemberButton = document.createElement("button");
-      addMemberButton.type = "button";
-      addMemberButton.className = "add-member-button";
-      addMemberButton.textContent = "+ Add Member";
-      addMemberButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const memberFormContainer = document.querySelector<HTMLElement>(
-          "#member-form-container",
-        );
+    const tasks = project.getTaskEntries();
 
-        if (!memberFormContainer) {
-          this.showMessage("Could not open the member form.");
-          return;
-        }
-
-        memberFormContainer.hidden = false;
-        void this.loadMemberForm(memberFormContainer, project.getId());
-      });
-      cardActions.appendChild(addMemberButton);
+    if (tasks.length === 0) {
+      details.appendChild(
+        makeTextElement("p", "No tasks available", "card-empty"),
+      );
     }
 
+    tasks.forEach(({ task }) => {
+      const taskRow = document.createElement("div");
+      taskRow.className = "card-task";
+
+      taskRow.appendChild(
+        makeTextElement("span", task.title || "Untitled task"),
+      );
+
+      details.appendChild(taskRow);
+    });
+
+    card.appendChild(details);
+
+    const status = project.getStatus();
     const moveButton = document.createElement("button");
     moveButton.type = "button";
     moveButton.className = "move-project-button";
@@ -466,7 +559,7 @@ class ProjectBoard {
         });
     });
 
-    cardActions.appendChild(moveButton);
+    card.appendChild(moveButton);
     if (status === "inprogress") {
       const backButton = document.createElement("button");
       backButton.type = "button";
@@ -484,14 +577,19 @@ class ProjectBoard {
           });
       });
 
-      cardActions.appendChild(backButton);
+      card.appendChild(backButton);
     }
-    details.appendChild(cardActions);
-    card.appendChild(details);
-
     const toggleDetails = (): void => {
       details.hidden = !details.hidden;
-      card.setAttribute("aria-expanded", String(!details.hidden));
+
+      const isExpanded = !details.hidden;
+      card.setAttribute("aria-expanded", String(isExpanded));
+
+      if (isExpanded) {
+        this.expandedProjectIds.add(project.getId());
+      } else {
+        this.expandedProjectIds.delete(project.getId());
+      }
     };
 
     card.addEventListener("click", toggleDetails);
@@ -504,33 +602,6 @@ class ProjectBoard {
     });
 
     return card;
-  }
-
-  private async loadMemberForm(
-    container: HTMLElement,
-    projectId: string,
-  ): Promise<void> {
-    try {
-      const response = await fetch("./member-form.html");
-
-      if (!response.ok) {
-        throw new Error(`Failed to load member form: ${response.statusText}`);
-      }
-
-      container.innerHTML = await response.text();
-      const form = container.querySelector<HTMLFormElement>("#member-form");
-
-      if (!form) {
-        throw new Error("Member form element was not found.");
-      }
-
-      initMemberForm(form, projectId, () => {
-        this.showMessage("Member added to project.");
-      });
-    } catch (error: unknown) {
-      console.error("Could not load member form:", error);
-      container.textContent = "Could not load the member form.";
-    }
   }
 
   private countMemberProjects(memberName: string): number {
