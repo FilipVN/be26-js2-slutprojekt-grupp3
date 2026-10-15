@@ -1,5 +1,4 @@
-
-import { ref, push, onValue } from "firebase/database";
+import { ref, push, onValue, update } from "firebase/database";
 import { database } from "./firebase";
 
 // 1. INTERFACE
@@ -62,8 +61,7 @@ function getValue(id: string): string {
     return input.value;
 }
 
-// 5. ASYNC FUNCTION
-// Save a project to Firebase
+// 5. ASYNC FUNCTIONS (Save & Update)
 
 async function addProject(project: Project): Promise<void> {
     await push(projectsRef, {
@@ -79,6 +77,11 @@ async function addProject(project: Project): Promise<void> {
     });
 
     console.log("Project saved!");
+}
+
+async function updateDeadline(projectId: string, newDeadline: string): Promise<void> {
+    const projectRef = ref(database, `projects/${projectId}`);
+    await update(projectRef, { deadline: newDeadline });
 }
 
 // 6. export initProjectForm function to main.ts
@@ -97,8 +100,6 @@ export function initProjectForm(): void {
 
     //fetch exisitng project names and member names from firebase
     loadExistingNames();
-
-
 
     // Set today's date (YYYY-MM-DD) in the "created" input field
     const createdInput =
@@ -153,73 +154,68 @@ export function initProjectForm(): void {
         }
     });
 
+    function loadExistingNames(): void {
 
-function loadExistingNames(): void {
+        const projectNameList =
+            document.querySelector<HTMLDataListElement>("#project-name-list");
 
-    const projectNameList =
-        document.querySelector<HTMLDataListElement>("#project-name-list");
+        const memberNameList =
+            document.querySelector<HTMLDataListElement>("#member-name-list");
 
-    const memberNameList =
-        document.querySelector<HTMLDataListElement>("#member-name-list");
+        if (!projectNameList || !memberNameList) {
+            return;
+        }
 
-    if (!projectNameList || !memberNameList) {
-        return;
+        const projectsRef = ref(database, "projects");
+
+        // Listen to existing projects in Firebase
+        onValue(projectsRef, (snapshot) => {
+
+            // Clear old suggestions
+            projectNameList.innerHTML = "";
+            memberNameList.innerHTML = "";
+
+            const projectNames = new Set<string>();
+            const memberNames = new Set<string>();
+
+            // Loop through projects
+            snapshot.forEach((childSnapshot) => {
+
+                const project = childSnapshot.val() as ProjectData;
+
+                // Get existing project names
+                if (project.name) {
+                    projectNames.add(project.name);
+                }
+
+                // Get existing member names
+                if (project.member?.name) {
+                    memberNames.add(project.member.name);
+                }
+            });
+
+            // Add project name suggestions
+            projectNames.forEach((name) => {
+
+                const option = document.createElement("option");
+                option.value = name;
+
+                projectNameList.appendChild(option);
+            });
+
+            // Add member name suggestions
+            memberNames.forEach((name) => {
+
+                const option = document.createElement("option");
+                option.value = name;
+
+                memberNameList.appendChild(option);
+            });
+
+        }, (error) => {
+            console.error("No existing names:", error);
+        });
     }
-
-    const projectsRef = ref(database, "projects");
-
-    // Listen to existing projects in Firebase
-    onValue(projectsRef, (snapshot) => {
-
-        // Clear old suggestions
-        projectNameList.innerHTML = "";
-        memberNameList.innerHTML = "";
-
-        const projectNames = new Set<string>();
-        const memberNames = new Set<string>();
-
-        // Loop through projects
-        snapshot.forEach((childSnapshot) => {
-
-            const project = childSnapshot.val() as ProjectData;
-
-            // Get existing project names
-            if (project.name) {
-                projectNames.add(project.name);
-            }
-
-            // Get existing member names
-            if (project.member?.name) {
-                memberNames.add(project.member.name);
-            }
-        });
-
-        // Add project name suggestions
-        projectNames.forEach((name) => {
-
-            const option = document.createElement("option");
-            option.value = name;
-
-            projectNameList.appendChild(option);
-        });
-
-        // Add member name suggestions
-        memberNames.forEach((name) => {
-
-            const option = document.createElement("option");
-            option.value = name;
-
-            memberNameList.appendChild(option);
-        });
-
-    }, (error) => {
-        console.error("No existing names:", error);
-    });
-}
-
-
-
-
 
     // 8. FETCH PROJECTS FROM FIREBASE
     onValue(projectsRef, (snapshot) => {
@@ -262,7 +258,41 @@ function loadExistingNames(): void {
             addText("ID", projectId ?? "");
             addText("Description", project.description ?? "");
             addText("Category", project.category ?? "");
-            addText("Deadline", project.deadline ?? "");
+            
+            //deadline
+            const deadlineP = document.createElement("p");
+            const deadlineStrong = document.createElement("strong");
+            deadlineStrong.textContent = "Deadline: ";
+            deadlineP.appendChild(deadlineStrong);
+
+            const deadlineInput = document.createElement("input");
+            deadlineInput.type = "date";
+            deadlineInput.value = project.deadline ?? "";
+            deadlineInput.style.marginLeft = "5px";
+            deadlineInput.style.marginRight = "5px";
+
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = "Zapisz";
+            saveBtn.style.padding = "2px 6px";
+            saveBtn.style.cursor = "pointer";
+
+            saveBtn.addEventListener("click", async () => {
+                if (projectId) {
+                    try {
+                        await updateDeadline(projectId, deadlineInput.value);
+                        alert("Deadline zaktualizowany pomyślnie!");
+                    } catch (error) {
+                        console.error("Błąd podczas zapisu deadline'u:", error);
+                        alert("Nie udało się zapisać deadline'u.");
+                    }
+                }
+            });
+
+            deadlineP.appendChild(deadlineInput);
+            deadlineP.appendChild(saveBtn);
+            card.appendChild(deadlineP);
+            // --------------------------------------------------
+
             addText("Created", project.created ?? "");
             addText("Member", project.member?.name ?? "");
             addText("Member Category", project.member?.category ?? "");
@@ -295,4 +325,4 @@ function loadExistingNames(): void {
         projectList.textContent = "Could not load projects.";
     });
 
-}     //end of export function initProjectForm()
+}    //end of export function initProjectForm()

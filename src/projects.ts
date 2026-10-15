@@ -4,6 +4,8 @@ import {
   ref,
   update,
   remove,
+  push,
+  set,
   type DataSnapshot,
 } from "firebase/database";
 import { database } from "./firebase";
@@ -141,6 +143,28 @@ class ProjectRepository {
     await update(ref(database, `projects/${projectId}`), {
       status,
     });
+  }
+  public async updateDeadline(
+    projectId: string,
+    deadline: string,
+  ): Promise<void> {
+    await update(ref(database, `projects/${projectId}`), {
+      deadline,
+    });
+    }
+
+  public async addMember(
+    projectId: string,
+    memberName: string,
+    memberCategory: string = "member",
+  ): Promise<void> {
+    const membersRef = ref(database, `projects/${projectId}/members`);
+    const newMemberRef = push(membersRef);
+    await set(newMemberRef, {
+      name: memberName,
+      category: memberCategory,
+    });
+    
   }
   public async deleteProject(projectId: string): Promise<void> {
     await remove(ref(database, `projects/${projectId}`));
@@ -410,6 +434,27 @@ class ProjectBoard {
     addMemberButton.type = "button";
     addMemberButton.className = "add-member-button";
     addMemberButton.textContent = "+ Add Member";
+    
+    addMemberButton.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      const memberName = window.prompt("Enter member name:");
+      if (!memberName || memberName.trim() === "") {
+        return;
+      }
+      const memberCategory = window.prompt("Enter member role (e.g. Developer, Designer):", "Developer");
+
+      try {
+        await this.repository.addMember(
+          project.getId(),
+          memberName.trim(),
+          memberCategory ? memberCategory.trim() : "member"
+        );
+        alert("Member added successfully!");
+      } catch (error) {
+        console.error("Could not add member:", error);
+        alert("Could not add member.");
+      }
+    });
 
     card.appendChild(addMemberButton);
     const deleteProjectButton = document.createElement("button");
@@ -461,9 +506,43 @@ class ProjectBoard {
     details.appendChild(
       makeTextElement("p", `Description: ${project.getDescription()}`),
     );
-    details.appendChild(
-      makeTextElement("p", `Deadline: ${project.getDeadline()}`),
-    );
+    const deadlineContainer = document.createElement("div");
+    deadlineContainer.style.margin = "8px 0";
+
+    const deadlineLabel = document.createElement("strong");
+    deadlineLabel.textContent = "Deadline: ";
+    deadlineContainer.appendChild(deadlineLabel);
+
+    const deadlineInput = document.createElement("input");
+    deadlineInput.type = "date";
+    deadlineInput.value = project.getDeadline() !== "—" ? project.getDeadline() : "";
+    deadlineInput.style.marginLeft = "5px";
+    deadlineInput.style.marginRight = "5px";
+
+    const saveDeadlineBtn = document.createElement("button");
+    saveDeadlineBtn.type = "button";
+    saveDeadlineBtn.textContent = "Save";
+    saveDeadlineBtn.style.padding = "2px 6px";
+    saveDeadlineBtn.style.cursor = "pointer";
+
+    deadlineInput.addEventListener("click", (e) => e.stopPropagation());
+    saveDeadlineBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      try {
+        await this.repository.updateDeadline(project.getId(), deadlineInput.value);
+        alert("Deadline updated successfully!");
+      } catch (error) {
+        console.error("Could not update deadline:", error);
+        alert("Could not update deadline.");
+      }
+      
+    });
+    
+
+    deadlineContainer.appendChild(deadlineInput);
+    deadlineContainer.appendChild(saveDeadlineBtn);
+    details.appendChild(deadlineContainer);
+    
 
     const priority = project.getPriority().toLowerCase();
 
